@@ -1,67 +1,74 @@
 package leethcode.medium;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class ThreeSum {
 
-	private List<Integer> sortedList(int a, int b, int c){
-		List<Integer> sorted = new ArrayList<Integer>();
-		int[] arr = new int[3];
-		arr[0] = a;
-		arr[1] = b;
-		arr[2] = c;
-		Arrays.sort(arr);
+	class Triplets{
+		private int _0;
+		private int _1;
+		private int _2;
+		Triplets(int a, int b, int c){
+			this._0 = Integer.min(c,Integer.min(a, b));
+			this._2 = Integer.max(c, Integer.max(a, b));
+			this._1 = (a+b+c) - (this._0+this._2);	
+		}
 		
-		for(int i=0;i<arr.length;i++)
-			sorted.add(arr[i]);
-		
-		return sorted;
-	}
-	private void sumPair(int nums[], int sumIndex,Set<List<Integer>> res){
-		//List<List<Integer>> res = new ArrayList<List<Integer>>();
-		int sum = -1*nums[sumIndex];
-		Set<Integer> set = new HashSet<Integer>();
-		
-		for(int i=0;i<nums.length;i++){
-			if(i==sumIndex)
-				continue;
-			int pair = sum - nums[i];
-			if(set.contains(pair)){
-				List<Integer> triples = sortedList(nums[i],pair,nums[sumIndex]);
-				res.add(triples);
-				set.remove(pair);
-			}else{
-				set.add(nums[i]);
-			}
+		@Override
+		public
+		int hashCode(){
+			String str = this._0+""+this._1+""+this._2;
+			return str.hashCode();
+		}
+		@Override
+		public boolean equals(Object o){
+			Triplets other = (Triplets) o;
+			return other.hashCode() == this.hashCode();
+			
+		}
+		public List<Integer> toList(){
+			List<Integer> lst= new ArrayList<>();
+			lst.add(this._0);
+			lst.add(this._1);
+			lst.add(this._2);
+			return lst;
 		}
 	}
 	
-	
-	 public List<List<Integer>> threeSum(int[] nums) {
-		 
-		 Set<List<Integer>> ans = new HashSet<List<Integer>>();
-		 for(int i=0;i<nums.length;i++){
-			 sumPair(nums,i,ans);
-		 }
-		return  new ArrayList<List<Integer>>(ans); 
+	public List<List<Integer>> threeSum(int[] nums) {
+		Set<Triplets> set = new HashSet<>();
+		List<List<Integer>> res = new ArrayList<>();
+	    if(nums == null || nums.length < 3) return res;
+	    Arrays.sort(nums);
+	    int len = nums.length;
+	    for(int i = 0; i < len; i++) {
+	        int target = 0 - nums[i];
+	        int j = i + 1, k = len - 1;
+	        while(j < k) {
+	            if(nums[j] + nums[k] == target) {
+	            	set.add(new Triplets(nums[i], nums[j], nums[k]));
+	            	j++;k--;
+	            } else if(nums[j] + nums[k] < target) {
+	                j++;
+	            } else {
+	                k--;
+	            }
+	        }
+	    }
+		for (Triplets t: set){
+			res.add(t.toList());
+		}
+	    return res;    
 	}
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		ThreeSum threesum = new ThreeSum();
-		int [] nums = {-1, 0, 1, 2, -1, -4};
-		List<List<Integer>> result = threesum.threeSum(nums);
-		for(List<Integer> l : result){
+		int[] nums = {-1, 0, 1, 2, -1, -4};
+		List<List<Integer>> res = (new ThreeSum().threeSum(nums));
+		for(List<Integer> l: res){
 			System.out.println();
-			for(int i: l){
+			for(Integer i: l){
 				System.out.print(i+"\t");
 			}
 		}
-		
-		
 	}
 
 }
