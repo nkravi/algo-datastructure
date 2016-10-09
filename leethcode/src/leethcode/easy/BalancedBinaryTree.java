@@ -4,24 +4,30 @@ import leethcode.datastructure.TreeNode;
 
 public class BalancedBinaryTree {
 	
-	private void inOrder(TreeNode node,int depth,Integer [] minMax){
-		if(node == null){
-			minMax[0] = Integer.min(minMax[0], depth);
-			minMax[1] = Integer.max(minMax[1], depth);
-			return;
+	
+	public int calHeight(TreeNode node,int height,boolean[] violate){
+		if(node == null || height == Integer.MAX_VALUE){
+			return height;
 		}
-		inOrder(node.left,depth+1,minMax);
-		inOrder(node.right,depth+1,minMax);
+		
+		int leftNodeHeight = calHeight(node.left, height+1,violate);
+		int rightNodeHeight = calHeight(node.right,height+1,violate);
+		
+		int diff = Math.abs(leftNodeHeight-rightNodeHeight);
+		if(diff > 1){
+			violate[0] = true;
+			return Integer.MAX_VALUE;
+		}
+		return Integer.max(leftNodeHeight, rightNodeHeight);
+		
 	}
 	
 	public boolean isBalanced(TreeNode root) {
-		if(root == null) return true;
-		Integer[] minMax = new Integer[2];
-		minMax[0] = Integer.MAX_VALUE;
-		minMax[1] = Integer.MIN_VALUE;
-		inOrder(root,0,minMax);
-		System.out.println(minMax[0]+"   "+minMax[1]);
-	    return Math.abs(minMax[0]-minMax[1]) <= 1;    
+		boolean [] violate = new boolean[1];
+		violate[0] = false;
+		calHeight(root,0,violate);
+		//System.out.println(height);
+		return !violate[0];
 	}
 
 	public static void main(String[] args) {

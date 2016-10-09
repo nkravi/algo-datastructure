@@ -6,6 +6,9 @@ import java.util.Map;
 public class LongestSubstringWithoutRepeatingCharacters {
 	
 	public int lengthOfLongestSubstring(String s) {
+		
+		
+		/*
 		int max = 0;
 		int local = 0;
 		char[] str = s.toCharArray();
@@ -25,9 +28,9 @@ public class LongestSubstringWithoutRepeatingCharacters {
 			if( local > max){
 				max = local;
 			}
-		}
+		}*/
 		
-        return  max;
+        return  0;
     }
 
 	public static void main(String[] args) {

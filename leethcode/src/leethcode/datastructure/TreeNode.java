@@ -37,6 +37,8 @@ public class TreeNode {
 		System.out.println(root.val);
 		System.out.println(root.right.val);
 	}
+	
+	
 	public static void PrinInorder(TreeNode node){
 		if(node == null) return;
 		PrinInorder(node.left);
