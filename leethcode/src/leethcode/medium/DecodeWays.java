@@ -1,52 +1,34 @@
 package leethcode.medium;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class DecodeWays {
-
-	private boolean isValid(String s){
-		int i = Integer.parseInt(s);
-		return i>0 && i<=26;
+	private boolean isValid2(char[] arr,int i){
+		if(i+1>= arr.length || arr[i] == '0') return false;		
+		String s = ""+arr[i] +""+arr[i+1];
+		int num = Integer.parseInt(s);
+		return num>=1 && num <=26;
 	}
-	private List<Character> filter(String s){
-		char[] sArray = s.trim().toCharArray();
-		List<Character> l = new ArrayList<Character>();
-		for(char a: sArray){
-			if(isValid(Character.toString(a))){
-				l.add(a);
-			}else{
-				return new ArrayList<Character>(); 
-			}
-		}
-		return l;
-	}
+	private boolean isValid1(char[] arr,int i){
+		if(i>= arr.length) return false;
+		String s = ""+arr[i];
+		int num = Integer.parseInt(s);
+		return num>=1 && num <=26;
+	} 
 	
+	private int decode(char[] arr,int i,Integer[] memo){
+		if(i==arr.length) return 1;
+		if(i>arr.length) return 0;
+		if(memo[i] != null) return memo[i];
+		memo[i] = (isValid1(arr,i)?decode(arr,i+1,memo):0) + (isValid2(arr,i)?decode(arr,i+2,memo):0); 
+		return memo[i];
+	}
+
 	public int numDecodings(String s) {
-		List<Character> sArray = filter(s);
-		if(sArray.size() == 0) return 0;
-		int[][] solve = new int[sArray.size()][sArray.size()];
-		
-		for(int i=0;i<solve.length;i++){
-			for(int j=0;j<solve[i].length;j++){
-				if(j>=i){
-					if(i == 0){
-						solve[i][j] =1;
-					}else{
-						int m = Math.max(solve[i-1][j-1], solve[i-1][j]);
-						String num =  Character.toString(sArray.get(j-1)) + Character.toString(sArray.get(j));
-						solve[i][j] = (isValid(num)) ? m+1:m;
-					}
-				}
-			}
-		}
-		
-		return solve[sArray.size()-1][sArray.size()-1];
-        
+		if(s==null || s.length() ==0 || s.charAt(0) == '0') return 0;
+		return decode(s.toCharArray(),0,new Integer[s.length()]);
     }
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String s= "12";
+		String s= "101";
 		System.out.println(new DecodeWays().numDecodings(s));
 
 	}

@@ -18,11 +18,11 @@ public class PaintHouse {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		int[][] costs = {
+		/*int[][] costs = {
 				{1,3,4},
 				{2,7,6},
 				{5,4,3}
-		};
+		};*/
 		
 		
 		int [][] costs1 = {
