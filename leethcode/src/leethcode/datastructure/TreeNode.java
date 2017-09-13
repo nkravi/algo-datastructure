@@ -46,4 +46,16 @@ public class TreeNode {
 		PrinInorder(node.right);
 	}
 	
+	public static boolean compare(TreeNode node1,TreeNode node2){
+		if(node1== null && node2 == null){
+			return true;
+		}
+		if(node1 == null || node2 == null){
+			return false;
+		}else if(node1.val != node2.val){
+			 return false;
+		}else{
+			return compare(node1.left, node2.left) && compare(node1.right, node2.right);
+		}
+	}
 }
