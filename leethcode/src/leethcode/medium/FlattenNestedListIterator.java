@@ -47,20 +47,24 @@ public class FlattenNestedListIterator implements Iterator<Integer>{
 	    @Override
 	    public Integer next() {
 	    	if(this.hasNext()) {
-	    		if(stack.isEmpty()) {
-	    			stack.push(nestedList.get(currIndex++));
-	    		}
-	    		expandStackTop();
-	    		if(stack.size() != 0) {
-	    			return stack.pop().getInteger();
-	    		}
+	    		return stack.pop().getInteger();
 	    	}
 	        return null;
 	    }
 
 	    @Override
 	    public boolean hasNext() {
-	        return !(stack.isEmpty() && currIndex == nestedList.size()) ;
+	    	expandStackTop();
+	    	while(currIndex < nestedList.size()) {
+	    		if(stack.isEmpty()) {
+	    			stack.push(nestedList.get(currIndex++));
+	    		}
+	    		expandStackTop();
+	    		if(stack.size() > 0) {
+	    			break;
+	    		}
+	    	}
+	        return !stack.isEmpty();
 	    }
 	
 
