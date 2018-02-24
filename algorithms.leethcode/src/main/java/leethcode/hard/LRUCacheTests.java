@@ -1,6 +1,7 @@
 package leethcode.hard;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
+
 
 import org.junit.Before;
 import org.junit.Test;
